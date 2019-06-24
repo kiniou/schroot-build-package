@@ -1,0 +1,4 @@
+click
+daiquiri
+schroot
+click_completion
