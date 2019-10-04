@@ -1,10 +1,11 @@
 import daiquiri
 import logging
 import click
+import click_completion
 
 daiquiri.setup()
 log = logging.getLogger()
-
+click_completion.init()
 
 @click.group()
 @click.option('-v', '--verbose/--no-verbose',
