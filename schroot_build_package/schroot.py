@@ -1,9 +1,11 @@
-import click
+"""schroot cli commands"""
 import logging
-from subprocess import run, PIPE
 from pathlib import Path
 import csv
+
+import click
 from tabulate import tabulate
+
 from .cli import main
 
 log = logging.getLogger()
@@ -25,8 +27,8 @@ def create(arch, suite, schroots):
 
     See /usr/share/debootstrap for a complete list of available deboostrap suites.
     """
-    log.info("creating schroot %s in %s", suite, schroots)
-    
+    log.info("creating schroot %s(%s) in %s", suite, arch, schroots)
+
 
 def add_vendor_to_list(vendor, items):
     """Prepend vendor column to a csv DictReader"""
