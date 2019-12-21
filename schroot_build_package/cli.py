@@ -7,6 +7,7 @@ daiquiri.setup()
 log = logging.getLogger()
 click_completion.init()
 
+
 @click.group()
 @click.option('-v', '--verbose/--no-verbose',
               help="verbose logging",
