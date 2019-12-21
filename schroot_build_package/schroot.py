@@ -3,6 +3,7 @@ import logging
 from subprocess import run, PIPE
 from pathlib import Path
 import csv
+from tabulate import tabulate
 from .cli import main
 
 log = logging.getLogger()
@@ -27,6 +28,27 @@ def create(arch, suite, schroots):
     log.info("creating schroot %s in %s", suite, schroots)
     
 
+def add_vendor_to_list(vendor, items):
+    """Prepend vendor column to a csv DictReader"""
+    for item in items:
+        item['vendor'] = vendor
+        item.move_to_end('vendor', last=False)
+        log.debug(item)
+        yield item
+
+
+def keep_columns(items, columns_to_keep):
+    """Keep selected columns in a csv DictReader."""
+    for item in items:
+        new_item = item.copy()
+        keys = item.keys()
+        for column in keys:
+            log.debug(column)
+            if column not in columns_to_keep:
+                del new_item[column]
+        yield new_item.copy()
+
+
 @schroot.command('list-suites')
 @click.option('--vendor', metavar="VENDOR",
               type=click.Choice(_available_vendors))
@@ -36,11 +58,15 @@ def list_suites(vendor):
         vendors = _available_vendors
     else:
         vendors = [vendor]
-    for v in vendors:
-        print(v)
-        csv_path = Path("/usr/share/distro-info/{0}.csv".format(v))
+    for vendor_iter in vendors:
+        csv_path = Path("/usr/share/distro-info/{0}.csv".format(vendor_iter))
         with csv_path.open() as csv_file:
             reader = csv.DictReader(csv_file)
-            for line in reader:
-                print("- {0} - {1}".format(line.get('series'),
-                                           line.get('codename')))
+            print(tabulate(
+                add_vendor_to_list(vendor_iter, keep_columns(reader, ['version',
+                                                                      'codename',
+                                                                      'release',
+                                                                      'eol'])),
+                headers="keys"))
+        if vendor_iter != vendors[-1]:
+            print()
