@@ -1,4 +1,4 @@
-click
-daiquiri
-schroot
-click_completion
+click==7.0
+daiquiri==1.6.1
+schroot==0.4
+click_completion==0.5.2
