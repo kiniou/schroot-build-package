@@ -9,7 +9,7 @@ from tabulate import tabulate
 from .cli import main
 
 log = logging.getLogger()
-_available_vendors = ['debian', 'ubuntu']
+AVAILABLE_VENDORS = ['debian', 'ubuntu']
 
 
 @main.group()
@@ -53,11 +53,11 @@ def keep_columns(items, columns_to_keep):
 
 @schroot.command('list-suites')
 @click.option('--vendor', metavar="VENDOR",
-              type=click.Choice(_available_vendors))
+              type=click.Choice(AVAILABLE_VENDORS))
 def list_suites(vendor):
     """List available vendors and suites"""
     if vendor is None:
-        vendors = _available_vendors
+        vendors = AVAILABLE_VENDORS
     else:
         vendors = [vendor]
     for vendor_iter in vendors:
