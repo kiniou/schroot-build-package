@@ -1,5 +1,6 @@
 # schroot-build-package
 ![build](https://github.com/kiniou/schroot-build-package/workflows/build/badge.svg)
+
 This project is an opinionated alternative rewrite of `sbuild` with python.
 
 ## ✅ Installation
