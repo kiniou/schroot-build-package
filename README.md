@@ -36,7 +36,7 @@ Commands:
 
 ## 👨‍💻 Hacking
 
-If you want to hack this code and/or contribute with PR (♥), you can just fork
+If you want to hack this code and/or contribute with PR (❤), you can just fork
 this repository and use editable pip mode installation within a virtualenv:
 1. Create your python3 virtualenv:
 ```shell
