@@ -16,4 +16,5 @@ def test_schroot_create(cmd_run):
     cmd = ["sbp", "schroot", "create", "sid", "/tmp/sid-amd64"]
     result = cmd_run(cmd)
     log.debug(result)
-    assert result.returncode == 0, "Can not create requested schroot with command %s" % (" ".join(cmd))
+    assert result.returncode == 0, ("Can not create requested schroot with command %s"
+                                    % (" ".join(cmd)))
