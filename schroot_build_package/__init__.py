@@ -1,4 +1,4 @@
-from . import (cli,
+from . import (cli,  # noqa
                schroot)
 
 __appname__ = "schroot-build-package"
