@@ -33,18 +33,18 @@ def create_schroot(arch, variant, suite, schroots):
     See /usr/share/debootstrap for a complete list of available deboostrap suites.
     """
     # TODO: explore the value of using `proot` instead of `debootstrap` ()
-    log.info("creating schroot %s(%s) in %s", suite, arch, schroots)
+    schroot_path = Path(schroots) / "{0}-{1}".format(suite, arch)
+    log.info("creating schroot %s(%s) in %s", suite, arch, schroot_path)
 
     if os.getuid() != 0:
         log.error("Must be root !!!")
 
-    schroots_path = Path(schroots) / "{0}-{1}".format(suite, arch)
-    if schroots_path.exists():
+    if schroot_path.exists():
         log.error("%s already exists !!! (Hint: remove it first with a good old «rm -rf %s»)",
-                  schroots_path, schroots_path)
+                  schroot_path, schroot_path)
         sys.exit(1)
 
-    result = run(['debootstrap', '--variant={0}'.format(variant), suite, schroots_path],
+    result = run(['debootstrap', '--variant={0}'.format(variant), suite, schroot_path],
                  check=False)
 
     sys.exit(result.returncode)
