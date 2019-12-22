@@ -1,4 +1,5 @@
 """schroot cli commands"""
+from collections import OrderedDict
 import logging
 import os
 from pathlib import Path
@@ -58,16 +59,15 @@ def add_vendor_to_list(vendor, items):
         yield item
 
 
-def keep_columns(items, columns_to_keep):
-    """Keep selected columns in a csv DictReader."""
+def keep_columns_and_reorder(items, columns_to_keep):
+    """Keep selected columns in a csv DictReader and reorder them."""
     for item in items:
-        new_item = item.copy()
-        keys = item.keys()
-        for column in keys:
+        new_item = OrderedDict()
+        for column in columns_to_keep:
             log.debug(column)
-            if column not in columns_to_keep:
-                del new_item[column]
-        yield new_item.copy()
+            if column in columns_to_keep:
+                new_item[column] = item[column]
+        yield new_item
 
 
 @schroot.command('list-suites')
@@ -83,11 +83,15 @@ def list_suites(vendor):
         csv_path = Path("/usr/share/distro-info/{0}.csv".format(vendor_iter))
         with csv_path.open() as csv_file:
             reader = csv.DictReader(csv_file)
-            print(tabulate(
-                add_vendor_to_list(vendor_iter, keep_columns(reader, ['version',
-                                                                      'codename',
-                                                                      'release',
-                                                                      'eol'])),
-                headers="keys"))
+            print(
+                tabulate(
+                    add_vendor_to_list(vendor_iter,
+                                       keep_columns_and_reorder(reader, ['series',
+                                                                         'version',
+                                                                         'codename',
+                                                                         'release',
+                                                                         'eol'])),
+                    headers="keys")
+            )
         if vendor_iter != vendors[-1]:
             print()
