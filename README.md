@@ -1,5 +1,5 @@
 # schroot-build-package
-![build](https://github.com/kiniou/schroot-build-package/workflows/build/badge.svg)
+[![build](https://github.com/kiniou/schroot-build-package/workflows/build/badge.svg?branch=master)](https://github.com/kiniou/schroot-build-package/actions?query=workflow%3Abuild+branch%3Amaster)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 This project is an opinionated alternative rewrite of `sbuild` with python.
