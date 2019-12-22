@@ -1,7 +1,10 @@
 """schroot cli commands"""
 import logging
+import os
 from pathlib import Path
 import csv
+from subprocess import run
+import sys
 
 import click
 from tabulate import tabulate
@@ -19,9 +22,10 @@ def schroot():
 
 @schroot.command()
 @click.option('--arch', metavar="ARCHITECTURE", default="amd64")
+@click.option('--variant', type=click.Choice(['buildd', 'minbase']), default='minbase')
 @click.argument('SUITE')
 @click.argument('SCHROOTS', required=False, default='/var/lib/schroot')
-def create(arch, suite, schroots):
+def create(arch, variant, suite, schroots):
     """Bootstrap a schroot with a recognized debootstrap SUITE
     under the SCHROOTS path.
 
@@ -29,6 +33,20 @@ def create(arch, suite, schroots):
     """
     # TODO: explore the value of using `proot` instead of `debootstrap` ()
     log.info("creating schroot %s(%s) in %s", suite, arch, schroots)
+
+    if os.getuid() != 0:
+        log.error("Must be root !!!")
+
+    schroots_path = Path(schroots) / "{0}-{1}".format(suite, arch)
+    if schroots_path.exists():
+        log.error("%s already exists !!! (Hint: remove it first with a good old «rm -rf %s»)",
+                  schroots_path, schroots_path)
+        sys.exit(1)
+
+    result = run(['debootstrap', '--variant={0}'.format(variant), suite, schroots_path],
+                 check=False)
+
+    sys.exit(result.returncode)
 
 
 def add_vendor_to_list(vendor, items):
