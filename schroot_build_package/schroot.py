@@ -1,9 +1,9 @@
 """schroot cli commands"""
 from collections import OrderedDict
+import csv
 import logging
 import os
 from pathlib import Path
-import csv
 from subprocess import run
 import sys
 
@@ -16,17 +16,17 @@ log = logging.getLogger()
 AVAILABLE_VENDORS = ['debian', 'ubuntu']
 
 
-@main.group()
-def schroot():
-    """schroot related commands"""
+@main.group("schroot")
+def schroot_group():
+    """schroot cli commands"""
 
 
-@schroot.command()
+@schroot_group.command('create', short_help="bootstrap a chroot environment")
 @click.option('--arch', metavar="ARCHITECTURE", default="amd64")
 @click.option('--variant', type=click.Choice(['buildd', 'minbase']), default='minbase')
 @click.argument('SUITE')
 @click.argument('SCHROOTS', required=False, default='/var/lib/schroot')
-def create(arch, variant, suite, schroots):
+def create_schroot(arch, variant, suite, schroots):
     """Bootstrap a schroot with a recognized debootstrap SUITE
     under the SCHROOTS path.
 
@@ -70,7 +70,7 @@ def keep_columns_and_reorder(items, columns_to_keep):
         yield new_item
 
 
-@schroot.command('list-suites')
+@schroot_group.command('list-suites', short_help="list available suites to bootstrap")
 @click.option('--vendor', metavar="VENDOR",
               type=click.Choice(AVAILABLE_VENDORS))
 def list_suites(vendor):
