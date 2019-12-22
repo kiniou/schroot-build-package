@@ -1,5 +1,7 @@
-import daiquiri
+"""cli - CLI entrypoint"""
 import logging
+
+import daiquiri
 import click
 import click_completion
 
@@ -28,8 +30,8 @@ def main(verbose, debug):
 @main.command('build')
 @click.argument("PATH")
 def build(path):
+    """Build a package"""
     log.info("building %s", path)
-    pass
 
 
 if __name__ == '__main__':

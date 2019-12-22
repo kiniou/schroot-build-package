@@ -1,3 +1,4 @@
+"""schroot_build_package - opinionated sbuild alternative"""
 from . import (cli,  # noqa
                schroot)
 
