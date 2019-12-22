@@ -28,6 +28,9 @@ jobs:
     - name: Lint with pylint
       run: |
         pip install pylint
+        # just print fixme/todo/... messages
+        pylint --exit-zero --score=no --disable=all --enable=fixme schroot_build_package
+        # now do the real linting
         pylint schroot_build_package
     - name: Test with pytest
       run: |

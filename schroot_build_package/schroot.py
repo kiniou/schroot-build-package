@@ -27,6 +27,7 @@ def create(arch, suite, schroots):
 
     See /usr/share/debootstrap for a complete list of available deboostrap suites.
     """
+    # TODO: explore the value of using `proot` instead of `debootstrap` ()
     log.info("creating schroot %s(%s) in %s", suite, arch, schroots)
 
 
