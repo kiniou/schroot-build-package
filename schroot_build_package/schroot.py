@@ -23,7 +23,9 @@ def schroot_group():
 
 @schroot_group.command('create', short_help="bootstrap a chroot environment")
 @click.option('--arch', metavar="ARCHITECTURE", default="amd64")
-@click.option('--variant', type=click.Choice(['buildd', 'minbase']), default='minbase')
+@click.option('--variant', metavar="VARIANT",
+              type=click.Choice(['buildd', 'minbase']),
+              default='minbase')
 @click.argument('SUITE')
 @click.argument('SCHROOTS', required=False, default='/var/lib/schroot')
 def create_schroot(arch, variant, suite, schroots):
